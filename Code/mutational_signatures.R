@@ -671,14 +671,6 @@ rownames_names_HRD <- gsub(" - ", ")\n", rownames_names_HRD)
 rownames_names_HRD <- gsub(", ", ",\n", rownames_names_HRD)
 rownames_names_HRD <- gsub(" ", "\n", rownames_names_HRD)
 
-# Clip TMB values larger than 350 to the largest value below 300 and set minimum to 0 (only for heatmap visualization)
-#tmb_index_larger350 = which(metadata_dates_TMB$TMB > 350)
-#min_tmb_index = which.min(metadata_dates_TMB$TMB)
-#metadata_dates_TMB$TMB[tmb_index_larger350] = max(metadata_dates_TMB$TMB[-tmb_index_larger350])
-#metadata_dates_TMB$TMB[min_tmb_index] = 0
-
-days_after_first_seq_sample <- as.numeric(metadata_dates_TMB$Date_yymmdd) -
-  min(as.numeric(metadata_dates_TMB$Date_yymmdd[!is.na(metadata_dates_TMB$Date_yymmdd)])) 
 # Pheatmap custom function
 generate_pheatmap <- function(matrix, 
                               title = "", 
@@ -856,69 +848,6 @@ if (use_case_samples_only == FALSE){
                                 metadata_annotation = TRUE,
                                 fontsize = 7) 
 }
-
-# Heatmaps without flats mutations
-cos_sim_samples_signatures_exomes %>% 
-  as_tibble() %>% 
-  select(-S.5, -S.3, -S.25, -S.40) -> cos_sim_samples_signatures_no_flat
-cos_sim_samples_signatures_no_flat <- as.data.frame(cos_sim_samples_signatures_no_flat)
-rownames(cos_sim_samples_signatures_no_flat) <- sample_names
-
-pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_noflat <- 
-  generate_pheatmap(cos_sim_samples_signatures_no_flat,
-                    "Heatmap of pairwise cosine similarity between original samples profiles and exomes COSMIC signatures (annotated by tumor type and metadata, no flat signatures)",
-                    metadata_annotation = TRUE,
-                    fontsize = fontsize)
-save_plot("COSMIC/cosine_similarity_original_vs_cosmic/heatmaps/removed_flat/pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_noflat.png", 
-          pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_noflat)
-
-pheatmaps_iterative_clustered(cos_sim_samples_signatures_no_flat,
-                              fontsize = fontsize,
-                              real_time_visualization = FALSE,
-                              no_flat = TRUE)
-
-## Heatmaps benchmark data
-if (use_case_samples_only == FALSE){
-  
-  # MutationalPattern
-  benchmark_cos_sim_mpheatmap <- 
-    plot_cosine_heatmap(cos_sim_benchmark_signatures_exome, col_order = cosmic_order_exomes, cluster_rows = TRUE)
-  ggsave(paste(results_path, "benchmark/COSMIC/cosine_similarity_original_vs_cosmic/mpheatmap_benchmark_cos_sim.png", sep = ""),
-         benchmark_cos_sim_mpheatmap)
-  
-  # Pheatmap
-  benchmark_samples$Annotation[benchmark_samples$Annotation == "HRD/BRCAness profile"] <- "HRD/BRCA p."
-  pheatmap_annotation_benchmark <- data.frame("Tumor.type" = benchmark_samples$Subtype,
-                                              "Annotation" = benchmark_samples$Annotation) 
-  rownames(pheatmap_annotation_benchmark) <- benchmark_samples$SampleID
-  annotation_colors_benchmark = list(Tumor.type = c("Prostate c." = discrete_palette[12],
-                                                    "Cervical c." = discrete_palette[3],
-                                                    "Colon c." = discrete_palette[4],
-                                                    "Lung c." = discrete_palette[7]))
-  pheatmap_benchmark <- function(matrix,
-                                 title,
-                                 cluster_cols = TRUE,
-                                 no_clusters = NA){
-  pheatmap(matrix,
-           annotation_row = pheatmap_annotation_benchmark,
-           annotation_colors = annotation_colors_benchmark,
-           color = viridis(10),
-           main = title,
-           cluster_cols = cluster_cols,
-           cutree_rows = no_clusters)
-  }
-  benchmark_cos_sim_pheatmap <- 
-    pheatmap_benchmark(cos_sim_benchmark_signatures_exome,
-                       "Heatmap of pairwise cosine similarity between original benchmark samples profiles and exomes COSMIC signatures")  
-  save_plot("benchmark/COSMIC/cosine_similarity_original_vs_cosmic/pheatmap_benchmark_cos_sim.png", 
-            benchmark_cos_sim_pheatmap)
-  benchmark_cos_sim_pheatmap_clustered <- 
-    pheatmap_benchmark(cos_sim_benchmark_signatures_exome,
-                       "Heatmap of pairwise cosine similarity between original benchmark samples profiles and exomes COSMIC signatures (3 clusters)",
-                       no_clusters = 3)  
-  save_plot("benchmark/COSMIC/cosine_similarity_original_vs_cosmic/benchmark_cos_sim_pheatmap_clustered.png", 
-            benchmark_cos_sim_pheatmap_clustered)
-}  
 
 
 ###### 6. Reconstruct 96 mutational profiles
