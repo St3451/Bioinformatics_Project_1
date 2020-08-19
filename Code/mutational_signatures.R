@@ -551,7 +551,6 @@ if (use_case_samples_only == FALSE){
   save_plot("benchmark/COSMIC/cosine_similarity_original_vs_cosmic/pca_cos_sim_exomes_samples_input_benchmark_annotation.png", 
             pca_plot_cos_sim_exomes_samples_input_benchmark_annotation)
   
-  ### Relevant result
   pca_plot_cos_sim_exomes_sig_input_relevant <- 
     pca_with_metadata_signatures(cos_sim_samples_signatures_exomes,
                                  title = "PCA plot of pairwise cosine similarity (signatures as input)")
@@ -572,10 +571,8 @@ if (use_case_samples_only == FALSE){
   save_plot("relevant_results/pca_plot_cos_sim_benchmark.png", 
             pca_plot_cos_sim_exomes_samples_input_benchmark_annotation_relevant,
             height = 6, width = 9)
-  ###
 }
 
-## Relevant
 if (use_case_samples_only == TRUE){
   pca_plot_cos_sim_exomes_samples_input_col_response_labeled_cancergroup_relevant <- 
     pca_with_metadata_samples(cos_sim_samples_signatures_exomes,
@@ -586,7 +583,6 @@ if (use_case_samples_only == TRUE){
             pca_plot_cos_sim_exomes_samples_input_col_response_labeled_cancergroup_relevant,
             height = 7, width = 10)
 }
-##
 
 
 ## PCA biplots
@@ -777,7 +773,6 @@ pheatmap_cos_sim_original_vs_exomes_cosmic_metadata <-
 save_plot("COSMIC/cosine_similarity_original_vs_cosmic/heatmaps/pheatmap_cos_sim_original_vs_exomes_cosmic_metadata.png", 
           pheatmap_cos_sim_original_vs_exomes_cosmic_metadata)
 
-## RELEVANT
 pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_relevant <- 
   generate_pheatmap(cos_sim_samples_signatures_exomes,
                     "Heatmap of pairwise cosine similarity between original samples profiles and exomes COSMIC signatures",
@@ -786,7 +781,6 @@ pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_relevant <-
                     no_clusters = 9)
 save_plot("relevant_results/pheatmap_cos_sim_replicate.png", 
           pheatmap_cos_sim_original_vs_exomes_cosmic_metadata_relevant)
-##
 
 # Heatmaps for case samples
 if (use_case_samples_only == TRUE){
