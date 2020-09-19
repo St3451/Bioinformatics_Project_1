@@ -1,4 +1,4 @@
-# Bioinformatics Project 1
+# Bioinformatics Project at CGM
 
 This repository contains the report, presentation slides, and code for a summer project I did at the Center for Genomic Medicine at Rigshospitalet.
 
