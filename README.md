@@ -1,6 +1,6 @@
 # Bioinformatics Project at CGM
 
-This repository contains the report, presentation slides, and code for a summer project I did at the Center for Genomic Medicine at Rigshospitalet.
+This repository contains the report, presentation slides, and code for a summer project I did at the Center for Genomic Medicine (CGM) at Rigshospitalet.
 
 ## Towards building a predictor for response to cancer treatment using tumor mutational signatures
 
